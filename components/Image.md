@@ -109,3 +109,58 @@ In React Native, one interesting decision is that the `src` attribute is named `
 On the infrastructure side, the reason is that it allows to attach metadata to this object. For example if you are using `require('image!icon')`, then we add an `isStatic` attribute to flag it as a local file (don't rely on this fact, it's likely to change in the future!). This is also future proofing, for example we may want to support sprites at some point, instead of outputting `{uri: ...}`, we can output `{uri: ..., crop: {left: 10, top: 50, width: 20, height: 40}}` and transparently support spriting on all the existing call sites.
 
 On the user side, this lets you annotate the object with useful attributes such as the dimension of the image in order to compute the size it's going to be displayed in. Feel free to use it as your data structure to store more information about your image.
+
+一个 react 的组件用以显示不同类型的图片，包括网络图片，静态资源，临时的本地图片，还有本地磁盘的图片，比如手机照片。
+
+使用例子：
+
+```` javascript
+renderImages: function() {
+  return (
+    <View>
+      <Image
+        style={styles.icon}
+        source={require('image!myIcon')}
+      />
+      <Image
+        style={styles.logo}
+        source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
+      />
+    </View>
+  );
+},
+````
+
+## 支撑部分
+
+**accessibilityLabel** string 
+
+accessibilityLabel - 用来自定义更方便使用的字符串.
+
+**accessible** bool 
+
+accessible - 标识是否是一个可使用的元素.
+
+**capInsets** {top: number, left: number, bottom: number, right: number} 
+
+capInsets - 当图片的尺寸被改变时, capInsets 定义的角度大小会保持不变,但是图片的中心内容还有边框会被拉伸。但你想创建可以改变大小的圆角按钮，阴影还有其他可伸缩的元素时，这个属性会很重要。
+
+[https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/index.html#//apple_ref/occ/instm/UIImage/resizableImageWithCapInsets:](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/index.html#//apple_ref/occ/instm/UIImage/resizableImageWithCapInsets:)
+
+**source** {uri: string} 
+
+**style** style 
+
+├─[**Flexbox...**](http://facebook.github.io/react-native/docs/flexbox.html#proptypes)
+├─**backgroundColor** string
+├─**borderColor** string
+├─**borderRadius** number
+├─**borderWidth** number
+├─**opacity** number
+├─**resizeMode** Object.keys(ImageResizeMode)
+├─**tintColor** string
+└─**testID** string 
+
+testID - 当运行 UI 自动化测试脚本的时候，这会作为一个唯一的标识符。
+
+将图片显示出来是一件让人着迷的事情， 在这方面，React Native 为了让图片体验更好而浑身解数。
